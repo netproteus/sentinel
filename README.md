@@ -41,7 +41,7 @@ Create a folder to store state and config e.g. `/etc/sentinel` and a `config.jso
 Run with docker
 
 ```
-sudo docker run -t -i --rm -p 8000:8000 -v /etc/sentinel:/app/state sentinel
+sudo docker run -t -i --rm -p 8000:8000 -v /etc/sentinel:/app/state kierenbeckett/sentinel
 ```
 
 To view alerts HUD visit `http://localhost:8000/`.
