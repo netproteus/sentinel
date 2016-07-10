@@ -33,6 +33,27 @@ Create a folder to store state and config e.g. `/etc/sentinel` and a `config.jso
       "fail_contacts": [
         {"type": "email", "address": "team_one@example.com"}
       ]
+    },
+    {
+      "name": "my_disk_space_alert",
+      "plugin": "disk_space",
+      "config": {
+        "graphite_used_space_key": "servers.*.diskspace.*.gigabyte_used",
+        "graphite_avail_space_key": "servers.*.diskspace.*.gigabyte_avail"
+      },
+      "fail_contacts": [
+        {"type": "email", "address": "team_two@example.com"}
+      ]
+    },
+    {
+      "name": "my_sentry_alert",
+      "plugin": "sentry",
+      "config": {
+        "graphite_errors_key": "stats.sentry.errors"
+      },
+      "fail_contacts": [
+        {"type": "email", "address": "team_three@example.com"}
+      ]
     }
   ]
 }
