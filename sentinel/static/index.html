@@ -1,0 +1,45 @@
+<html ng-app="alertApp">
+  <head>
+    <title>Sentinel</title>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <script src="static/controller.js"></script>
+    <style>
+      body {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body ng-controller="AlertCtrl">
+    <div class="container" ng-show="error">
+        <div class="alert alert-danger" role="alert"><b>Whoops!</b> {{error}}</div>
+    </div>
+
+    <div class="container" ng-show="alerts.length">
+      <div class="panel" ng-class="{'panel-warning': alert.contacted_warn && !alert.contacted_fail, 'panel-danger': alert.contacted_fail}" ng-repeat="alert in alerts | filter:notOk | orderBy:'state'">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{alert.name}}</h3>
+        </div>
+        <div class="panel-body">
+          <div style="float: right">Broken for {{formatTime(alert.last_state_change)}}</div>
+          {{alert.message}}
+        </div>
+      </div>
+
+      <div class="panel panel-success" ng-hide="(alerts | filter:notOk).length">
+        <div class="panel-heading">
+          <h3 class="panel-title">Everything is awesome!</h3>
+        </div>
+        <div class="panel-body">
+          All {{alerts.length}} monitoring checks are OK.
+        </div>
+      </div>
+
+      <div style="text-align: center; font-style: italic">Last checked {{formatTime(lastChecked)}} ago</div>
+    </div>
+  </body>
+</html>
