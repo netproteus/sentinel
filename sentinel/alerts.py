@@ -8,14 +8,14 @@ logging.basicConfig(stream=sys.stdout, format='%(asctime)s [%(levelname)s] %(mes
 log = logging.getLogger(__name__)
 
 
-def send_alert(message, contacts):
+def send_alert(key, message, contacts):
     for contact in contacts:
         try:
             contact_type = get_config()['contact_types'][contact['type']]
             plugin_module = getattr(__import__('sentinel.contact_type_plugins.' + contact_type['plugin']), 'contact_type_plugins')
             plugin_module = getattr(plugin_module, contact_type['plugin'])
             message_def = getattr(plugin_module, 'send_message')
-            message_def(contact_type['config'], message, contact)
+            message_def(contact_type['config'], key, message, contact)
         except Exception:
             log.exception('Could not send alert to %s', contact)
 
@@ -36,23 +36,23 @@ def check_alert(plugin_name, new_data, warn_contacts, fail_contacts, warn_delay,
         state_age = now - float(state['last_state_change'])
 
         if state['state'] == 'FAIL' and not state['contacted_fail'] and state_age >= fail_delay:
-            send_alert('[FAIL] %s, %s' % (key, state['message']), fail_contacts)
+            send_alert(key, '[FAIL] %s, %s' % (key, state['message']), fail_contacts)
             state['contacted_fail'] = True
 
         if state['state'] == 'FAIL' and not state['contacted_warn'] and state_age >= fail_delay:
-            send_alert('[FAIL] %s, %s' % (key, state['message']), warn_contacts)
+            send_alert(key, '[FAIL] %s, %s' % (key, state['message']), warn_contacts)
             state['contacted_warn'] = True
 
         if state['state'] == 'WARN' and not state['contacted_warn'] and state_age >= warn_delay:
-            send_alert('[WARN] %s, %s' % (key, state['message']), warn_contacts)
+            send_alert(key, '[WARN] %s, %s' % (key, state['message']), warn_contacts)
             state['contacted_warn'] = True
 
         if state['state'] == 'OK' and state['contacted_fail']:
-            send_alert('[OK] %s, %s' % (key, state['message']), fail_contacts)
+            send_alert(key, '[OK] %s, %s' % (key, state['message']), fail_contacts)
             state['contacted_fail'] = False
 
         if state['state'] == 'OK' and state['contacted_warn']:
-            send_alert('[OK] %s, %s' % (key, state['message']), warn_contacts)
+            send_alert(key, '[OK] %s, %s' % (key, state['message']), warn_contacts)
             state['contacted_warn'] = False
 
     item['keys'] = new_data

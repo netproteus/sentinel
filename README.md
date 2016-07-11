@@ -109,6 +109,29 @@ Check for low disk space across servers using graphite data.
 
 This assumes disk usage stats are emitted to graphite using keys such as `servers.<hostname>.diskspace.<drivename>.gigabyte_{used,avail}.`
 
+#### rabbit_queues
+
+Check for large RabbitMQ queues.
+
+```
+  ...
+  "my_rabbit_queues_alert": {
+    "plugin": "rabbit_queues",
+    "config": {
+      "authentication": {
+        "username": "rabbit_user",
+        "password": "rabbit_pass"
+      }
+      "host": "http://rabbit.example.com",
+      "queue_sizes": {
+        "queue_name_prefix_": (50, 5000, 1),
+      }
+    },
+    ...
+  },
+  ...
+```
+
 Contact Types
 -------------
 
@@ -164,6 +187,31 @@ Then to define a contact
   ...
   fail_contacts: [
     {"type": "my_smtp_contact_type", "address": "to_be_alerted@example.com"}
+  ],
+  ...
+```
+
+#### pagerduty
+
+Send an alert via PagerDuty.
+
+```
+  ...
+  "my_pagerduty_contact_type": {
+    "plugin": "pagerduty",
+    "config": {
+      "service_key": "xxx",
+    }
+  },
+  ...
+```
+
+Then to define a contact
+
+```
+  ...
+  fail_contacts: [
+    {"type": "my_pagerduty_contact_type"}
   ],
   ...
 ```

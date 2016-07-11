@@ -2,7 +2,7 @@ from email.mime.text import MIMEText
 import smtplib
 
 
-def send_message(config, message, contact):
+def send_message(config, key, message, contact):
     msg = MIMEText(message)
     msg['Subject'] = message
     msg['From'] = config['from_address']
