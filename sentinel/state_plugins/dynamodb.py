@@ -16,7 +16,7 @@ def get_metadata(config):
     item.pop('name')
     for k, v in item.items():
         if isinstance(v, Decimal):
-            item[k] - float(v)
+            item[k] = float(v)
     return item
 
 
@@ -27,7 +27,7 @@ def set_metadata(config, data):
     data['name'] = '_metadata'
     for k, v in data.items():
         if isinstance(v, float):
-            data[k] - Decimal(v)
+            data[k] = Decimal(v)
     table.put_item(Item=data)
 
 
@@ -46,7 +46,7 @@ def get_alert_data(config, name):
     item.pop('name')
     for k, v in item.items():
         if isinstance(v, Decimal):
-            item[k] - float(v)
+            item[k] = float(v)
     return item
 
 
@@ -57,5 +57,5 @@ def set_alert_data(config, name, data):
     data['name'] = name
     for k, v in data.items():
         if isinstance(v, float):
-            data[k] - Decimal(v)
+            data[k] = Decimal(v)
     table.put_item(Item=data)
