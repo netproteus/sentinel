@@ -1,7 +1,7 @@
 sentinel
 ========
 
-Sentinel is a light weight monitoring alerts tool.
+Sentinel is a light weight monitoring alerts tool.  It does not directly store any monitoring data, but is designed to provide alerting on top of existing tools such as [graphite](http://graphiteapp.org/).
 
 Installation
 ------------
@@ -27,39 +27,14 @@ Create a config file e.g. `/etc/sentinel.conf`
     {"type": "email", "address": "ops@example.com"}
   ],
   "alerts": {
-    "my_http_alert": {
+    "team_one_api": {
       "plugin": "http",
       "config": {
-        "friendly_name": "example.com",
+        "friendly_name": "Team One API",
         "url": "http://httpstat.us/200"
       },
       "fail_contacts": [
         {"type": "email", "address": "team_one@example.com"}
-      ]
-    },
-    "my_disk_space_alert": {
-      "plugin": "graphite_disk_space",
-      "config": {
-        "graphite": {
-          "host": "http://graphite.example.com"
-        },
-        "used_space_key": "servers.*.diskspace.*.gigabyte_used",
-        "avail_space_key": "servers.*.diskspace.*.gigabyte_avail"
-      },
-      "fail_contacts": [
-        {"type": "email", "address": "team_two@example.com"}
-      ]
-    },
-    "my_sentry_alert": {
-      "plugin": "graphite_sentry",
-      "config": {
-        "graphite": {
-          "host": "http://graphite.example.com"
-        },
-        "errors_key": "stats.sentry.errors"
-      },
-      "fail_contacts": [
-        {"type": "email", "address": "team_three@example.com"}
       ]
     }
   }
@@ -73,3 +48,24 @@ sudo docker run -t -i --rm -p 8000:80 -v /etc/sentinel.conf:/sentinel.conf -v /v
 ```
 
 To view alerts HUD visit `http://localhost:8000/`.
+
+Persisting State
+----------------
+
+To keep track of alerts Sentinel requires a certain amount of internal state.  By default this is stored to local disk, a better option for production is to store to a remote data store.  For example to persist to DynamoDB add to your `sentinel.conf`
+
+```
+{
+  ...
+  "state": {
+    plugin": "dynamodb",
+    "config": {
+      "table": "sentinel",
+      "aws_access_key_id": "xxx",
+      "aws_secret_access_key": "yyy",
+      "aws_region": "eu-west-1"
+    }
+  },
+  ...
+}
+```
