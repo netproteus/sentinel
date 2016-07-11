@@ -6,7 +6,7 @@ Sentinel is a light weight monitoring alerts tool.
 Installation
 ------------
 
-Create a config file e.g. `/etc/sentinel`
+Create a config file e.g. `/etc/sentinel.conf`
 
 ```
 {
