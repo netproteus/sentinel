@@ -36,8 +36,11 @@ Create a config file e.g. `/etc/sentinel`
     },
     {
       "name": "my_disk_space_alert",
-      "plugin": "disk_space",
+      "plugin": "graphite_disk_space",
       "config": {
+        "graphite": {
+          "host": "http://graphite.example.com"
+        },
         "graphite_used_space_key": "servers.*.diskspace.*.gigabyte_used",
         "graphite_avail_space_key": "servers.*.diskspace.*.gigabyte_avail"
       },
@@ -47,8 +50,11 @@ Create a config file e.g. `/etc/sentinel`
     },
     {
       "name": "my_sentry_alert",
-      "plugin": "sentry",
+      "plugin": "graphite_sentry",
       "config": {
+        "graphite": {
+          "host": "http://graphite.example.com"
+        },
         "graphite_errors_key": "stats.sentry.errors"
       },
       "fail_contacts": [

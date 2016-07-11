@@ -7,19 +7,19 @@ def get_disk_name(key):
 
 
 def get_data(config):
-    used_key = config['graphite_used_space_key']
-    avail_key = config['graphite_avail_space_key']
+    used_key = config['used_space_key']
+    avail_key = config['avail_space_key']
 
     hosts_used = {}
-    for (host,used) in get_datapoint(used_key).items():
+    for (host,used) in get_datapoint(config, used_key).items():
         hosts_used[get_disk_name(host)] = used
 
     hosts_prev_avail = {}
-    for (host,avail) in get_datapoint(avail_key, 'from=-1425min&until=-1440min').items():
+    for (host,avail) in get_datapoint(config, avail_key, 'from=-1425min&until=-1440min').items():
         hosts_prev_avail[get_disk_name(host)] = avail
 
     data = {}
-    for (host,avail) in get_datapoint(avail_key).items():
+    for (host,avail) in get_datapoint(config, avail_key).items():
         host = get_disk_name(host)
         rate_per_day = hosts_prev_avail.get(host, 0) - avail
         days_left = avail / rate_per_day if rate_per_day > 0 else None
