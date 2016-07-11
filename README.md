@@ -121,7 +121,7 @@ Check for large RabbitMQ queues.
       "authentication": {
         "username": "rabbit_user",
         "password": "rabbit_pass"
-      }
+      },
       "host": "http://rabbit.example.com",
       "queue_sizes": {
         "queue_name_prefix_": [50, 5000, 1]
