@@ -1,7 +1,5 @@
 import logging
-import smtplib
 import time
-from email.mime.text import MIMEText
 import sys
 from sentinel.storage_utils import get_alert_data, set_alert_data, get_metadata, set_metadata, get_config
 
@@ -10,27 +8,14 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 
-def send_email(config, message, address):
-    msg = MIMEText(message)
-    msg['Subject'] = message
-    msg['From'] = config['from_address']
-    msg['To'] = address
-    s = smtplib.SMTP(config['host'])
-    s.starttls()
-    if 'authentication' in config:
-        s.login(config['authentication']['username'], config['authentication']['password'])
-    s.sendmail(config['from_address'], [address], msg.as_string())
-    s.quit()
-
-
 def send_alert(message, contacts):
     for contact in contacts:
         try:
             contact_type = get_config()['contact_types'][contact['type']]
-            if contact_type['plugin'] == 'smtp':
-                send_email(contact_type['config'], message, contact['address'])
-            else:
-                raise Exception('Unknown contact type plugin')
+            plugin_module = getattr(__import__('sentinel.contact_type_plugins.' + contact_type['plugin']), 'contact_type_plugins')
+            plugin_module = getattr(plugin_module, contact_type['plugin'])
+            message_def = getattr(plugin_module, 'send_message')
+            message_def(contact_type['config'], message, contact)
         except Exception:
             log.exception('Could not send alert to %s', contact)
 
@@ -89,7 +74,7 @@ def check_alerts():
     config = get_config()
     overall_data = {}
     for alert_name, alert in config['alerts'].items():
-        plugin_module = getattr(__import__('sentinel.plugins.' + alert['plugin']), 'plugins')
+        plugin_module = getattr(__import__('sentinel.alert_plugins.' + alert['plugin']), 'alert_plugins')
         plugin_module = getattr(plugin_module, alert['plugin'])
         data_def = getattr(plugin_module, 'get_data')
 
