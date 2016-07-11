@@ -197,3 +197,5 @@ To keep track of alerts Sentinel requires a certain amount of internal state.  B
   ...
 }
 ```
+
+You will need to create a DynamoDB table with a non-ranged primary key named `name`, a read/write thoughput of 5 will suffice.
