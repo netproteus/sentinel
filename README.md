@@ -124,7 +124,7 @@ Check for large RabbitMQ queues.
       }
       "host": "http://rabbit.example.com",
       "queue_sizes": {
-        "queue_name_prefix_": (50, 5000, 1),
+        "queue_name_prefix_": [50, 5000, 1]
       }
     },
     ...
