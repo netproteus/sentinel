@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get update && \
-    apt-get install -qy build-essential python-dev python-setuptools python-pip git supervisor
+    apt-get install -qy build-essential libffi-dev libssl-dev python-dev python-setuptools python-pip git supervisor
 
 ADD requirements.txt /app/requirements.txt
 WORKDIR /app
