@@ -15,11 +15,11 @@ def index():
 def alerts():
     alerts = []
     metadata = get_metadata()
-    for alert in get_config()['alerts'] + [{'name': 'monitoring'}]:
-        item = get_alert_data(alert['name'])
+    for alert_name in get_config()['alerts'].keys() + ['monitoring']:
+        item = get_alert_data(alert_name)
         for name, data in item['keys'].items():
             data['name'] = name
-            data['plugin'] = alert['name']
+            data['plugin'] = alert_name
             data['last_state_change'] = float(data['last_state_change'])
             data['contacted_warn'] = bool(data['contacted_warn'])
             data['contacted_fail'] = bool(data['contacted_fail'])

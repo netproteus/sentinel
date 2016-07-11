@@ -13,9 +13,8 @@ Create a config file e.g. `/etc/sentinel`
   "monitoring_fail_contacts": [
     {"type": "email", "address": "ops@example.com"}
   ],
-  "contacts": [
-    {
-      "name": "email",
+  "contact_types": {
+    "email": {
       "plugin": "smtp",
       "config": {
         "authentication": {
@@ -26,10 +25,9 @@ Create a config file e.g. `/etc/sentinel`
         "from_address": "sentinel@example.com"
       }
     }
-  ],
-  "alerts": [
-    {
-      "name": "my_http_alert",
+  },
+  "alerts": {
+    "my_http_alert": {
       "plugin": "http",
       "config": {
         "endpoints": {
@@ -40,8 +38,7 @@ Create a config file e.g. `/etc/sentinel`
         {"type": "email", "address": "team_one@example.com"}
       ]
     },
-    {
-      "name": "my_disk_space_alert",
+    "my_disk_space_alert": {
       "plugin": "graphite_disk_space",
       "config": {
         "graphite": {
@@ -54,8 +51,7 @@ Create a config file e.g. `/etc/sentinel`
         {"type": "email", "address": "team_two@example.com"}
       ]
     },
-    {
-      "name": "my_sentry_alert",
+    "my_sentry_alert": {
       "plugin": "graphite_sentry",
       "config": {
         "graphite": {
@@ -67,7 +63,7 @@ Create a config file e.g. `/etc/sentinel`
         {"type": "email", "address": "team_three@example.com"}
       ]
     }
-  ]
+  }
 }
 ```
 

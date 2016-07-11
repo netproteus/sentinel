@@ -26,13 +26,11 @@ def send_email(config, message, address):
 def send_alert(message, contacts):
     for contact in contacts:
         try:
-            for config in get_config()['contacts']:
-                if config['name'] == contact['type']:
-                    if config['plugin'] == 'smtp':
-                        send_email(config['config'], message, contact['address'])
-                        break
+            contact_type = get_config()['contact_types'][contact['type']]
+            if contact_type['plugin'] == 'smtp':
+                send_email(contact_type['config'], message, contact['address'])
             else:
-                raise Exception('Unknown contact type')
+                raise Exception('Unknown contact type plugin')
         except Exception:
             log.exception('Could not send alert to %s', contact)
 
@@ -90,21 +88,21 @@ def check_alerts():
     log.info('Checking alerts')
     config = get_config()
     overall_data = {}
-    for alert in config['alerts']:
+    for alert_name, alert in config['alerts'].items():
         plugin_module = getattr(__import__('sentinel.plugins.' + alert['plugin']), 'plugins')
         plugin_module = getattr(plugin_module, alert['plugin'])
         data_def = getattr(plugin_module, 'get_data')
 
-        log.info('Checking %s', alert['name'])
+        log.info('Checking %s', alert_name)
         try:
             new_data = data_def(alert['config'])
-            check_alert(alert['name'], new_data, alert.get('warn_contacts', []), alert.get('fail_contacts', []), alert.get('warn_delay', 0), alert.get('fail_delay', 0))
+            check_alert(alert_name, new_data, alert.get('warn_contacts', []), alert.get('fail_contacts', []), alert.get('warn_delay', 0), alert.get('fail_delay', 0))
             state = {'state': 'OK', 'message': 'ran successfully'}
-            log.info('Checked %s', alert['name'])
+            log.info('Checked %s', alert_name)
         except Exception:
             state = {'state': 'FAIL', 'message': 'an exception was thrown, check sentinel logs for details'}
-            log.exception('Check of %s failed', alert['name'])
-        overall_data['%s monitoring plugin' % alert['name']] = state
+            log.exception('Check of %s failed', alert_name)
+        overall_data['%s monitoring plugin' % alert_name] = state
     check_alert('monitoring', overall_data, [], config['monitoring_fail_contacts'], 0, 14*60)
 
     metadata['last_check_finished'] = time.time()
