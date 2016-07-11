@@ -79,14 +79,11 @@ Check a HTTP endpoint and fail if a 200 isn't returned.
 
 ```
   ...
-  "alerts": {
-    "my_http_alert": {
-      "plugin": "http",
-      "config": {
-        "friendly_name": "My endpoint name",
-        "url": "http://httpstat.us/200"
-      },
-      ...
+  "my_http_alert": {
+    "plugin": "http",
+    "config": {
+      "friendly_name": "My endpoint name",
+      "url": "http://httpstat.us/200"
     },
     ...
   },
@@ -99,14 +96,11 @@ Check for low disk space across servers using graphite data.
 
 ```
   ...
-  "alerts": {
-    "my_disk_space_alert": {
-      "plugin": "graphite_disk_space",
-      "config": {
-        "used_space_key": "servers.*.diskspace.*.gigabyte_used",
-        "avail_space_key": "servers.*.diskspace.*.gigabyte_avail",
-      },
-      ...
+  "my_disk_space_alert": {
+    "plugin": "graphite_disk_space",
+    "config": {
+      "used_space_key": "servers.*.diskspace.*.gigabyte_used",
+      "avail_space_key": "servers.*.diskspace.*.gigabyte_avail",
     },
     ...
   },
@@ -150,19 +144,16 @@ Send an alert via email using SMTP.
 
 ```
   ...
-  "contact_types": {
-    "my_smtp_contact_type": {
-      "plugin": "smtp",
-      "config": {
-        "authentication": {
-          "username": "xxx",
-          "password": "yyy"
-        },
-        "host": "email-smtp.us-east-1.amazonaws.com",
-        "from_address": "sentinel@example.com"
-      }
-    },
-    ...
+  "my_smtp_contact_type": {
+    "plugin": "smtp",
+    "config": {
+      "authentication": {
+        "username": "xxx",
+        "password": "yyy"
+      },
+      "host": "email-smtp.us-east-1.amazonaws.com",
+      "from_address": "sentinel@example.com"
+    }
   },
   ...
 ```
