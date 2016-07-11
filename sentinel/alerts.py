@@ -4,7 +4,7 @@ import sys
 from sentinel.storage_utils import get_alert_data, set_alert_data, get_metadata, set_metadata, get_config
 
 
-logging.basicConfig(stream=sys.stdout, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, format='%(asctime)s [%(levelname)s] %(message)s', level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
