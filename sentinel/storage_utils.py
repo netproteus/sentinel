@@ -2,13 +2,13 @@ import json
 import os
 
 
-STATE_PATH = 'state/'
+STATE_PATH = '/state/'
 META_PATH = STATE_PATH + 'metadata.json'
 ALERT_PATH = STATE_PATH + 'alert_%s.json'
 
 
 def get_config():
-    with open(STATE_PATH + 'config.json') as f:
+    with open('/sentinel.conf') as f:
         return json.load(f)
 
 

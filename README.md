@@ -6,7 +6,7 @@ Sentinel is a light weight monitoring alerts tool.
 Installation
 ------------
 
-Create a folder to store state and config e.g. `/etc/sentinel` and a `config.json` inside it e.g.
+Create a config file e.g. `/etc/sentinel`
 
 ```
 {
@@ -59,10 +59,10 @@ Create a folder to store state and config e.g. `/etc/sentinel` and a `config.jso
 }
 ```
 
-Run with docker
+Run with docker, be sure to configure the correct path of the config file and also a suitable folder for storing working state
 
 ```
-sudo docker run -t -i --rm -p 8000:8000 -v /etc/sentinel:/app/state kierenbeckett/sentinel
+sudo docker run -t -i --rm -p 8000:80 -v /etc/sentinel.conf:/sentinel.conf -v /var/sentinel:/state kierenbeckett/sentinel
 ```
 
 To view alerts HUD visit `http://localhost:8000/`.
