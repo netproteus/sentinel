@@ -13,30 +13,32 @@ def get_config():
 
 
 def get_metadata():
-    if os.path.exists(META_PATH):
-        with open(META_PATH) as f:
-            return json.load(f)
-
-    return {}
+    state_config = get_config().get('state', {'plugin': 'file', 'config': {}})
+    plugin_module = getattr(__import__('sentinel.state_plugins.' + state_config['plugin']), 'state_plugins')
+    plugin_module = getattr(plugin_module, state_config['plugin'])
+    state_def = getattr(plugin_module, 'get_metadata')
+    return state_def(state_config['config'])
 
 
 def set_metadata(data):
-    with open(META_PATH, 'wb') as f:
-        json.dump(data, f)
+    state_config = get_config().get('state', {'plugin': 'file', 'config': {}})
+    plugin_module = getattr(__import__('sentinel.state_plugins.' + state_config['plugin']), 'state_plugins')
+    plugin_module = getattr(plugin_module, state_config['plugin'])
+    state_def = getattr(plugin_module, 'set_metadata')
+    state_def(state_config['config'], data)
 
 
 def get_alert_data(name):
-    plugin_path = ALERT_PATH % name
-    if os.path.exists(plugin_path):
-        with open(plugin_path) as f:
-            return json.load(f)
-
-    return {
-        'keys': {}
-    }
+    state_config = get_config().get('state', {'plugin': 'file', 'config': {}})
+    plugin_module = getattr(__import__('sentinel.state_plugins.' + state_config['plugin']), 'state_plugins')
+    plugin_module = getattr(plugin_module, state_config['plugin'])
+    state_def = getattr(plugin_module, 'get_alert_data')
+    return state_def(state_config['config'], name)
 
 
 def set_alert_data(name, data):
-    plugin_path = ALERT_PATH % name
-    with open(plugin_path, 'wb') as f:
-        json.dump(data, f)
+    state_config = get_config().get('state', {'plugin': 'file', 'config': {}})
+    plugin_module = getattr(__import__('sentinel.state_plugins.' + state_config['plugin']), 'state_plugins')
+    plugin_module = getattr(plugin_module, state_config['plugin'])
+    state_def = getattr(plugin_module, 'set_alert_data')
+    state_def(state_config['config'], name, data)
