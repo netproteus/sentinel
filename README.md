@@ -52,7 +52,7 @@ To view alerts HUD visit `http://localhost:8000/`.
 Persisting State
 ----------------
 
-To keep track of alerts Sentinel requires a certain amount of internal state.  By default this is stored to local disk, a better option for production is to store to a remote data store.  For example to persist to DynamoDB add to your `sentinel.conf`
+To keep track of alerts Sentinel requires a certain amount of internal state.  By default this is persisted to local disk, a better option for production is to persist to a remote data store.  For example to persist to DynamoDB add to your `sentinel.conf`
 
 ```
 {
@@ -68,4 +68,75 @@ To keep track of alerts Sentinel requires a certain amount of internal state.  B
   },
   ...
 }
+```
+
+Alert Plugins
+-------------
+
+### http
+
+Check a HTTP endpoint and fail if a 200 isn't returned.
+
+```
+  ...
+  "alerts": {
+    "my_http_alert": {
+      "plugin": "http",
+      "config": {
+        "friendly_name": "My endpoint name",
+        "url": "http://httpstat.us/200"
+      },
+      ...
+    },
+    ...
+  },
+  ...
+```
+
+### graphite_disk_space
+
+Check for low disk space across servers using graphite data.
+
+```
+  ...
+  "alerts": {
+    "my_disk_space_alert": {
+      "plugin": "graphite_disk_space",
+      "config": {
+        "used_space_key": "servers.*.diskspace.*.gigabyte_used",
+        "avail_space_key": "servers.*.diskspace.*.gigabyte_avail",
+      },
+      ...
+    },
+    ...
+  },
+  ...
+```
+
+This assumes disk usage stats are emitted to graphite using keys such as `servers.<hostname>.diskspace.<drivename>.gigabyte_{used,avail}.`
+
+Contact Type Plugins
+--------------------
+
+### smtp
+
+Send an alert via email using SMTP.
+
+```
+  ...
+  "contact_types": {
+    "my_smtp_contact_type": {
+      "plugin": "smtp",
+      "config": {
+        "authentication": {
+          "username": "xxx",
+          "password": "yyy"
+        },
+        "host": "email-smtp.us-east-1.amazonaws.com",
+        "from_address": "sentinel@example.com"
+      }
+    },
+    ...
+  },
+  ...
 ```
