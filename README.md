@@ -6,7 +6,7 @@ Sentinel is a light weight monitoring alerts tool.  It does not directly store a
 Installation
 ------------
 
-Create a config file e.g. `/etc/sentinel.conf`
+The sentinel web UI is read-only, all configuration is done via a file.  Start by creating the config file e.g. `/etc/sentinel.conf`
 
 ```
 {
@@ -47,7 +47,7 @@ Run with docker, be sure to configure the correct path of the config file and al
 sudo docker run -t -i --rm -p 8000:80 -v /etc/sentinel.conf:/sentinel.conf -v /var/sentinel:/state kierenbeckett/sentinel
 ```
 
-To view alerts HUD visit `http://localhost:8000/`.
+You should see your example HTTP alert being run in the logs.  To view the alerts HUD visit `http://localhost:8000/`.
 
 Persisting State
 ----------------
