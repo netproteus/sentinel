@@ -10,9 +10,6 @@ Create a config file e.g. `/etc/sentinel`
 
 ```
 {
-  "monitoring_fail_contacts": [
-    {"type": "email", "address": "ops@example.com"}
-  ],
   "contact_types": {
     "email": {
       "plugin": "smtp",
@@ -26,6 +23,9 @@ Create a config file e.g. `/etc/sentinel`
       }
     }
   },
+  "monitoring_fail_contacts": [
+    {"type": "email", "address": "ops@example.com"}
+  ],
   "alerts": {
     "my_http_alert": {
       "plugin": "http",
@@ -43,8 +43,8 @@ Create a config file e.g. `/etc/sentinel`
         "graphite": {
           "host": "http://graphite.example.com"
         },
-        "graphite_used_space_key": "servers.*.diskspace.*.gigabyte_used",
-        "graphite_avail_space_key": "servers.*.diskspace.*.gigabyte_avail"
+        "used_space_key": "servers.*.diskspace.*.gigabyte_used",
+        "avail_space_key": "servers.*.diskspace.*.gigabyte_avail"
       },
       "fail_contacts": [
         {"type": "email", "address": "team_two@example.com"}
@@ -56,7 +56,7 @@ Create a config file e.g. `/etc/sentinel`
         "graphite": {
           "host": "http://graphite.example.com"
         },
-        "graphite_errors_key": "stats.sentry.errors"
+        "errors_key": "stats.sentry.errors"
       },
       "fail_contacts": [
         {"type": "email", "address": "team_three@example.com"}
