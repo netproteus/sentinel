@@ -25,6 +25,9 @@ def set_metadata(config, data):
     dynamodb = session.resource('dynamodb')
     table = dynamodb.Table(config['table'])
     data['name'] = '_metadata'
+    for k, v in data.items():
+        if isinstance(v, float):
+            data[k] - Decimal(v)
     table.put_item(Item=data)
 
 
@@ -52,4 +55,7 @@ def set_alert_data(config, name, data):
     dynamodb = session.resource('dynamodb')
     table = dynamodb.Table(config['table'])
     data['name'] = name
+    for k, v in data.items():
+        if isinstance(v, float):
+            data[k] - Decimal(v)
     table.put_item(Item=data)
