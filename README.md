@@ -190,3 +190,18 @@ To keep track of alerts Sentinel requires a certain amount of internal state.  B
 ```
 
 You will need to create a DynamoDB table with a non-ranged primary key named `name`, a read/write thoughput of 5 will suffice.
+
+Custom Plugins
+--------------
+
+You can write additional alert, contact type and state plugins.  Use the existing plugins as examples, the easiest way to then integrate them is to make your own extension of the Sentinel Docker image
+
+```
+FROM kierenbeckett/sentinel
+
+ADD my_alert_plugin.py /app/sentinel/alert_plugins/
+ADD my_contact_type_plugin.py /app/sentinel/contact_type_plugins/
+ADD my_state_plugin.py /app/sentinel/state_plugins/
+```
+
+If you think your plugin might be useful to other people please consider opening a pull request.
