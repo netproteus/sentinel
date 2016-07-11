@@ -10,16 +10,22 @@ Create a config file e.g. `/etc/sentinel`
 
 ```
 {
-  "smtp": {
-    "authentication": {
-      "username": "xxx",
-      "password": "yyy"
-    },
-    "host": "email-smtp.us-east-1.amazonaws.com",
-    "from_address": "sentinel@example.com"
-  },
   "monitoring_fail_contacts": [
     {"type": "email", "address": "ops@example.com"}
+  ],
+  "contacts": [
+    {
+      "name": "email",
+      "plugin": "smtp",
+      "config": {
+        "authentication": {
+          "username": "xxx",
+          "password": "yyy"
+        },
+        "host": "email-smtp.us-east-1.amazonaws.com",
+        "from_address": "sentinel@example.com"
+      }
+    }
   ],
   "alerts": [
     {

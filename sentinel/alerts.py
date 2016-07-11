@@ -10,25 +10,27 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 
-def send_email(message, address):
-    smtp_config = get_config()['smtp']
+def send_email(config, message, address):
     msg = MIMEText(message)
     msg['Subject'] = message
-    msg['From'] = smtp_config['from_address']
+    msg['From'] = config['from_address']
     msg['To'] = address
-    s = smtplib.SMTP(smtp_config['host'])
+    s = smtplib.SMTP(config['host'])
     s.starttls()
-    if 'authentication' in smtp_config:
-        s.login(smtp_config['authentication']['username'], smtp_config['authentication']['password'])
-    s.sendmail(smtp_config['from_address'], [address], msg.as_string())
+    if 'authentication' in config:
+        s.login(config['authentication']['username'], config['authentication']['password'])
+    s.sendmail(config['from_address'], [address], msg.as_string())
     s.quit()
 
 
 def send_alert(message, contacts):
     for contact in contacts:
         try:
-            if contact['type'] == 'email':
-                send_email(message, contact['address'])
+            for config in get_config()['contacts']:
+                if config['name'] == contact['type']:
+                    if config['plugin'] == 'smtp':
+                        send_email(config['config'], message, contact['address'])
+                        break
             else:
                 raise Exception('Unknown contact type')
         except Exception:
