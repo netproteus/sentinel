@@ -16,7 +16,6 @@ def get_url(url):
 
 
 def get_data(config):
-    data = {}
-    for name, url in config['endpoints'].items():
-        data[name] = get_url(url)
-    return data
+    return {
+        config['friendly_name']: get_url(config['url'])
+    }

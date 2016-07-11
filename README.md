@@ -30,9 +30,8 @@ Create a config file e.g. `/etc/sentinel`
     "my_http_alert": {
       "plugin": "http",
       "config": {
-        "endpoints": {
-          "example.com": "http://httpstat.us/200"
-        }
+        "friendly_name": "example.com",
+        "url": "http://httpstat.us/200"
       },
       "fail_contacts": [
         {"type": "email", "address": "team_one@example.com"}
