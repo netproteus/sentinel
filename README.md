@@ -200,7 +200,7 @@ Send an alert via PagerDuty.
   "my_pagerduty_contact_type": {
     "plugin": "pagerduty",
     "config": {
-      "service_key": "xxx",
+      "service_key": "xxx"
     }
   },
   ...
